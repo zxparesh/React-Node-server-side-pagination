@@ -13,3 +13,5 @@ PAGE_SIZE=10
 set those database credentials.
 
 run as 'npm run start' in both client and server
+
+don't forget to change port in client/src/Utils/Constants.js file if you change the PORT in above file
