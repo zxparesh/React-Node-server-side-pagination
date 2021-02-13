@@ -1,0 +1,37 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+td {
+    min-width: 120px;
+}
+
+.page-nav-container {
+    margin-bottom: 10px;
+}
+
+.page-nav {
+    margin: 0 5px;
+    border: 1px solid grey;
+    background-color: #0078d4;
+    color: white;
+    cursor: pointer;
+}
+
+.page-nav:focus {
+    outline: none;
+}
+
+.page-nav.disabled {
+    background-color: white;
+    cursor: default;
+    background-color: #f3f3f3;
+    color: black;
+}
