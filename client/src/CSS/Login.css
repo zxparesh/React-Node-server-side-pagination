@@ -4,6 +4,12 @@
     align-items: center;
 }
 
-.submit {
+.login-buttons {
     margin-top: 20px;
+    display: flex;
+    align-content: space-between;
+}
+
+.signup {
+    margin-left: 70px;
 }

@@ -1,9 +1,32 @@
+const bcrypt = require('bcryptjs');
 const { executeQuery } = require('./executeQuery');
 
 const PAGE_SIZE = process.env.PAGE_SIZE || 100;
 
 const getQuery = (pageNumber, pageSize) => {
     return `SELECT * FROM users ORDER BY firstname OFFSET (${(pageNumber - 1) * pageSize}) ROWS FETCH NEXT ${pageSize} ROWS ONLY`
+}
+
+async function userLogin(email, password) {
+    const query = "SELECT * FROM users WHERE email='" + email + "'";
+    console.log("query", query)
+    const user = await executeQuery(query);
+    console.log("result", user[0])
+    if (user && user.length && bcrypt.compareSync(password, user[0].password)) {
+        return "AmfkAglDUKFJuHDBfYDBWVtVfNczxFs";
+    } else {
+        return null;
+    }
+}
+
+async function userSignup(data) {
+    const { firstName, lastName, email, password } = data;
+    const passwordHash = bcrypt.hashSync(password, 10);
+    const query = `INSERT INTO users VALUES('${firstName}', '${lastName}', '${email}', '${passwordHash}')`;
+    console.log("query", query)
+    const result = await executeQuery(query);
+    console.log("result", result)
+    return "AmfkAglDUKFJuHDBfYDBWVtVfNczxFs";
 }
 
 async function fetchUserList(pageNumber, pageSize = PAGE_SIZE) {
@@ -36,6 +59,8 @@ async function fetchUserCount(pageSize = PAGE_SIZE) {
 }
 
 module.exports = {
+    userLogin,
+    userSignup,
     fetchUserList,
     fetchUserCount,
 }

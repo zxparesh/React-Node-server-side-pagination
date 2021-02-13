@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import '../CSS/Login.css';
 import { apiHost } from '../Utils/Constants';
+import { Redirect } from 'react-router-dom'
 
 async function loginUser(credentials) {
   return fetch(apiHost + '/login', {
@@ -14,17 +15,28 @@ async function loginUser(credentials) {
     .then(data => data.json())
 }
 
-export default function Login({ setToken }) {
+export default function Login({ setToken, setSignup }) {
   const [username, setUserName] = useState();
   const [password, setPassword] = useState();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const token = await loginUser({
-      email: username,
-      password
-    });
-    setToken(token);
+    if (!!username && !!password) {
+      const token = await loginUser({
+        email: username,
+        password
+      });
+      console.log("token", token)
+      setToken(token);
+    } else {
+      alert("Please enter credentials!")
+    }
+  }
+
+  const onSignup = (e) => {
+    e.preventDefault();
+    setSignup(true);
+    return <Redirect to='/signup' />
   }
 
   return (
@@ -39,8 +51,9 @@ export default function Login({ setToken }) {
           <p>Password</p>
           <input type="password" onChange={e => setPassword(e.target.value)} />
         </label>
-        <div>
+        <div className="login-buttons">
           <button type="submit" className="submit">Submit</button>
+          <button className="signup" onClick={onSignup}>Signup</button>
         </div>
       </form>
     </div>
@@ -48,5 +61,6 @@ export default function Login({ setToken }) {
 }
 
 Login.propTypes = {
-  setToken: PropTypes.func.isRequired
+  setToken: PropTypes.func.isRequired,
+  setSignup: PropTypes.func.isRequired,
 }

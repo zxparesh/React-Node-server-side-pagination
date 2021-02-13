@@ -10,6 +10,10 @@ const dbConfig = {
     user: DB_USER,
     password: DB_PASS,
     database: DB_NAME,
+    options: {
+        "encrypt": true,
+        "enableArithAbort": true
+    }
 }
 
 function executeQuery(query) {
@@ -26,7 +30,6 @@ function executeQuery(query) {
                         reject(error);
                         console.log("Error in query execution...", query)
                     } else {
-                        console.log("Query result:", resultSet.recordset);
                         resolve(resultSet.recordset);
                     }
                 })

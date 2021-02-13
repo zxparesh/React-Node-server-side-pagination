@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors')
 const app = express();
-const { fetchUserList, fetchUserCount } = require('./handlers');
+const { fetchUserList, fetchUserCount, userLogin, userSignup } = require('./handlers');
 
 app.use(cors());
 app.use(express.json());
@@ -11,9 +11,33 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/login', (req, res) => {
     const { email, password } = req.body;
     console.log("login fetch", email, password)
-    res.send({
-        token: 'test123'
-    });
+    userLogin(email, password)
+        .then(result => {
+            if (result) {
+                console.log("login res", result);
+                res.send({ token: result });
+            } else {
+                res.send(null);
+            }
+        })
+        .catch(error => {
+            res.send(null);
+        })
+});
+
+app.use('/signup', (req, res) => {
+    console.log("login fetch", req.body)
+    userSignup(req.body)
+        .then(result => {
+            if (result) {
+                res.send({ token: result });
+            } else {
+                res.send(null);
+            }
+        })
+        .catch(error => {
+            res.send(null);
+        })
 });
 
 app.use('/users', async (req, res) => {

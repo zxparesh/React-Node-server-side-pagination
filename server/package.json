@@ -10,6 +10,7 @@
   "author": "zxparesh",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "dotenv": "^8.2.0",
     "mssql": "^6.3.1"
   },
